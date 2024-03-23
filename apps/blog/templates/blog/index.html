@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% block title %}Blog{% endblock %}
+
+{% block content %}
+    <div class="my-4 rounded-lg bg-base-300 p-9 ">
+    <h1 class = "text-3xl font-bold mb-4">Blog</h1>
+    <a onclick="my_modal_4.showModal()" class="btn btn-primary">Create Post</a>
+    <div class="my-4 border-b-2 border-gray-300 w-full"></div>
+    <div class="grid grid-cols-3 gap-7">
+        {% for post in all_posts %}
+    
+          {% include 'blog/_include_blocks/_card_post.html' with post=post %}
+
+        {% endfor %}
+    </div>
+    <div class="join align-center justify-center flex my-4">
+      {% if all_posts.has_previous %}
+      <a href="?page=1" class="join-item btn">«</a>
+      <a href="?page={{ all_posts.previous_page_number }}" class="join-item btn">Page {{ all_posts.previous_page_number }}</a>
+      {% endif %}
+
+      <button class="join-item btn btn-primary">Page {{ all_posts.number }}</button>
+
+      {% if all_posts.has_next %}
+      <a href="?page={{ all_posts.next_page_number }}" class="join-item btn">Page {{ all_posts.next_page_number }}</a>
+      <a href="?page={{ all_posts.paginator.num_pages }}" class="join-item btn">»</a>
+      
+      {% endif %}
+    </div>
+  </div>
+
+
+
+
+  <dialog id="my_modal_4" class="modal">
+    <div class="modal-box w-11/12 max-w-5xl">
+      <form method="dialog">
+        <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+      </form>
+      <h3 class="font-bold text-lg mb-4">Create Post</h3>
+      <form action="{% url 'article:create' %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="grid grid-cols-1 gap-6">
+        {% for field in created_form %}
+          <div class="form-control">
+              <label class="label">
+                <span class="label-text">{{ field.label }}</span>
+              </label>
+           {% if field.name == 'content' %}
+            <textarea class="textarea textarea-bordered" name="{{ field.name }}" placeholder="{{ field.label }}" rows="5"></textarea>
+            {% elif field.name == 'image' %}
+            <input type="file" name="{{ field.name }}" class="file-input file-input-bordered file-input-accent  w-full max-w-xs" placeholder="{{ field.label }}">
+            {% else %}
+            <input type="{{ field.field.widget.input_type }}" name="{{ field.name }}" class="input input-bordered" placeholder="{{ field.label }}">
+            {% endif %}
+          </div>
+        {% endfor %}
+        <button class="btn btn-primary">Create</button>
+      </div>
+        
+      </form>
+    </div>
+  </dialog>
+
+
+
+<script>
+  function like(id) {
+    fetch(`like/${id}`, {
+      method: 'GET',
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if(data.user_like){
+        document.getElementById(`like_${id}`).innerHTML = `<i class="fa fa-heart text-red-500"></i> ${data.like_count}`;
+        }else{
+          document.getElementById(`like_${id}`).innerHTML = `<i class="fa fa-heart text-white"></i> ${data.like_count}`;
+        }
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+          // Redirect to the login page
+        window.location.href = "{% url 'members:login' %}";
+      });
+  }
+
+
+</script>
+{% endblock %}
+  

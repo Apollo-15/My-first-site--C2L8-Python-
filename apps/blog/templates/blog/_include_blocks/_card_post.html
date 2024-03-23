@@ -1,0 +1,17 @@
+<div class="card w-100 bg-base-200 shadow-xl hover:bg-base-100 transition-all duration-300 hover:shadow-2xl hover:scale-105">   
+    <a href="{% url 'article:detail' post.id %}">
+          <figure>
+            <img src="
+          {{ post.thumbnail.url }}        
+           " alt="Shoes" class="w-full" /></figure>
+
+      
+      <div class="card-body">
+        <h2 class="card-title">{{ post.title }}</h2>
+      </a>
+        <div class="card-actions justify-end">
+          <button id="like_{{post.id}}" onclick='like({{post.id}})'  class="btn btn-square  text-white text-lg"><i class="fa-solid fa-heart {%if user in post.like.all %}text-red-500{%else%}text-white{%endif%}"></i>{{ post.like.count }}</button>
+        </div>
+      </div>
+    </a>
+</div>
