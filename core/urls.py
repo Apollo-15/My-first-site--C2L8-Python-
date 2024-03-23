@@ -16,8 +16,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
 
-urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', include('apps.main.urls')),
-]
+urlpatterns = [ #google.com/
+    path('admin/', admin.site.urls),#google.com/admin/
+    path('article/', include('apps.blog.urls')),#google.com/blog/
+    path('members/', include('apps.members.urls')),#google.com/members/
+    path('', include('apps.main.urls')),#google.com/
+    path("__debug__/", include("debug_toolbar.urls")),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

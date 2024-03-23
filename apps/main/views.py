@@ -7,6 +7,3 @@ def index(request):
 
 def lol(request):
     return render(request, 'main/lol.html')
-
-def fts(request):
-    return render(request, 'main/fts.html')
