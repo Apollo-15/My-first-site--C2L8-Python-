@@ -29,6 +29,7 @@ class Post(models.Model):
         format='JPEG',
         options={'quality': 60})
     like = models.ManyToManyField(User, related_name='like_posts', blank=True)
+    dislike = models.ManyToManyField(User, related_name='dislike_posts', blank=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True) 
@@ -54,6 +55,7 @@ class Comment(models.Model):
     # parent = models.ForeignKey('self', on_delete=models.CASCADE, related_name='replies', null=True, blank=True)
     
     like = models.ManyToManyField(User, related_name='like_comments', blank=True)
+    dislike = models.ManyToManyField(User, related_name='dislike_comments', blank=True)
 
     class Meta:
         ordering = ['-created_at']

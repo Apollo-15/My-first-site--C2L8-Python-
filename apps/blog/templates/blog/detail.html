@@ -39,7 +39,8 @@
             <p class="text-gray-500 mb-4">Автор: {{ comment.author }}</p>
             <p class="text-gray-500 mb-4">Створений: {{ comment.created_at|timesince }} тому</p>
             <p>{{ comment.content }}</p>
-            <button id="like_{{comment.id}}" onclick='like({{comment.id}})'  class="btn btn-square  text-white text-lg"><i class="fa-solid fa-heart {%if user in comment.like %}text-red-500{%else%}text-white{%endif%}"></i>{{ comment.like.count }}</button>
+            <button id="like_{{comment.id}}" onclick='like({{comment.id}})'  class="btn btn-square  text-white text-lg"><i class="fa-solid fa-thumbs-up {%if user in comment.like %}text-red-500{%else%}text-white{%endif%}"></i>{{ comment.like.count }}</button>
+            <button id="dislike_{{comment.id}}" onclick='dislike({{comment.id}})'  class="btn btn-square  text-white text-lg"><i class="fa-solid fa-thumbs-down {%if user in comment.like %}text-black{%else%}text-white{%endif%}"></i>{{ comment.dislike.count }}</button>
         </div>
         {% endfor %}
     </div>
@@ -109,9 +110,29 @@
               .then((res) => res.json())
               .then((data) => {
                 if(data.user_like){
-                document.getElementById(`like_${id}`).innerHTML = `<i class="fa fa-heart text-red-500"></i> ${data.like_count}`;
+                document.getElementById(`like_${id}`).innerHTML = `<i class="fa fa-thumbs-up text-red-500"></i> ${data.like_count}`;
                 }else{
-                  document.getElementById(`like_${id}`).innerHTML = `<i class="fa fa-heart text-white"></i> ${data.like_count}`;
+                  document.getElementById(`like_${id}`).innerHTML = `<i class="fa fa-thumbs-up text-white"></i> ${data.like_count}`;
+                }
+              })
+              .catch((error) => {
+                console.error('Error:', error);
+                  // Redirect to the login page
+                //window.location.href = "{% url 'members:login' %}";
+              })}
+            </script>
+
+          <script>
+          function dislike(id) {
+            fetch(`/article/dislike_comment/${id}`, {
+              method: 'GET',
+            })
+              .then((res) => res.json())
+              .then((data) => {
+                if(data.user_like){
+                document.getElementById(`dislike_${id}`).innerHTML = `<i class="fa fa-thumbs-down text-black"></i> ${data.dislike_count}`;
+                }else{
+                  document.getElementById(`dislike_${id}`).innerHTML = `<i class="fa fa-thumbs-down text-white"></i> ${data.dislike_count}`;
                 }
               })
               .catch((error) => {

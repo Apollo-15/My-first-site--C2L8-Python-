@@ -100,6 +100,30 @@ def like_comment_view(request, comment_id):
         return JsonResponse( {'like_count': comment.like.count(), 'user_like': user_like} )
     
 @login_required
+def dislike_view(request, post_id):
+    if request.method == 'GET':
+        post = get_object_or_404(Post, pk=post_id)
+        if request.user in post.dislike.all():
+            post.dislike.remove(request.user)
+            user_dislike = False
+        else:
+            post.dislike.add(request.user)
+            user_dislike = True
+        return JsonResponse( {'dislike_count': post.dislike.count(), 'user_dislike': user_dislike} )
+
+@login_required
+def dislike_comment_view(request, comment_id):
+    if request.method == 'GET':
+        comment = get_object_or_404(Comment, pk=comment_id)
+        if request.user in comment.dislike.all():
+            comment.dislike.remove(request.user)
+            user_dislike = False
+        else:
+            comment.dislike.add(request.user)
+            user_dislike = True
+        return JsonResponse( {'dislike_count': comment.dislike.count(), 'user_dislike': user_dislike} )
+
+@login_required
 def comment_view(request, post_id):
     if request.method == 'POST':
         post = get_object_or_404(Post, pk=post_id)
