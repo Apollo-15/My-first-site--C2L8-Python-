@@ -14,11 +14,13 @@ from .forms import PostForm, CommentForm
 def index(request):
     # print(request.GET.get('page', 1))   
     all_posts = Post.objects.all()
-    paginator = Paginator(all_posts, 3)
+    paginator = Paginator(all_posts, 6)
     page = request.GET.get('page')
     all_posts_page = paginator.get_page(page)
+    post_count = all_posts.count()
 
     context = {
+        'post_count': post_count,
         'all_posts': all_posts_page,
         'created_form': PostForm()
     }
