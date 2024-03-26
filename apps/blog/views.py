@@ -18,7 +18,7 @@ def index(request):
     page = request.GET.get('page')
     all_posts_page = paginator.get_page(page)
     post_count = all_posts.count()
-
+    
     context = {
         'post_count': post_count,
         'all_posts': all_posts_page,

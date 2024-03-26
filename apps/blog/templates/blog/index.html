@@ -93,7 +93,7 @@
       .then((res) => res.json())
       .then((data) => {
         if(data.user_dislike){
-        document.getElementById(`dislike_${id}`).innerHTML = `<i class="fa fa-thumbs-down text-red-500"></i> ${data.dislike_count}`;
+        document.getElementById(`dislike_${id}`).innerHTML = `<i class="fa fa-thumbs-down text-black"></i> ${data.dislike_count}`;
         }else{
           document.getElementById(`dislike_${id}`).innerHTML = `<i class="fa fa-thumbs-down text-white"></i> ${data.dislike_count}`;
         }
